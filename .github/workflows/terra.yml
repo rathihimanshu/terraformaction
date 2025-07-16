@@ -1,0 +1,36 @@
+name: TerraformAzureWorkflow
+
+on:
+    push:
+        branches:
+            - main
+
+jobs: 
+    SetUp:
+        name: terraformsetup
+        runs-on: ubuntu-latest
+
+
+        steps:
+            - name: checkout repository 
+              uses: actions/checkout@v4
+
+            - name: set up terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: "1.1.7"
+
+            - name: terraform init
+              run: terraform init
+
+            - name: terraform validate
+              run: terraform validate
+            
+            - name: terraform plan
+              run: terraform plan -out=tfplan
+
+            - name: terraform apply
+              run: terraform apply -auto-approve tfplan
+
+    
+    
